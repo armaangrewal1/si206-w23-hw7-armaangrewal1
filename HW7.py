@@ -77,7 +77,7 @@ def make_players_table(data, cur, conn):
     for i in range(len(id_list)):
         cur.execute('INSERT INTO Players (id, name, position_id, birthyear, nationality) VALUES (?,?,?,?,?)', (id_list[i], name_list[i], position_id_list[i], birthyear_list[i], nationality_list[i])) 
     conn.commit()
-       
+
     pass
 
 ## [TASK 2]: 10 points
@@ -91,6 +91,32 @@ def make_players_table(data, cur, conn):
         # the player's name, their position_id, and their nationality.
 
 def nationality_search(countries, cur, conn):
+    name_list = []
+    position_id_list = []
+    nationality_list = []
+    tuple_list = []
+
+    cur.execute('SELECT name FROM Players WHERE nationality = ?', (countries,))
+    names = cur.fetchall()
+    for name in names:
+        name_list.append(name[0])
+
+    cur.execute('SELECT position_id FROM Players WHERE nationality = ?', (countries,))
+    positions = cur.fetchall()
+    for position in positions:
+        position_id_list.append(position[0])
+
+    cur.execute("SELECT nationality from Players where nationality = ?", (countries,))
+    nationalities = cur.fetchall()
+    for nationality in nationalities:
+        nationality_list.append(nationality[0])
+
+    conn.commit()
+
+    for i in range(len(name_list)):
+        tuple_list.append((name_list[i],  position_id_list[i], nationality_list[i]))
+    print(tuple_list)
+    return tuple_list
     pass
 
 ## [TASK 3]: 10 points
@@ -110,6 +136,7 @@ def nationality_search(countries, cur, conn):
 
 
 def birthyear_nationality_search(age, country, cur, conn):
+    
     pass
 
 ## [TASK 4]: 15 points
