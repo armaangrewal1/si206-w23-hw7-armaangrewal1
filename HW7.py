@@ -1,8 +1,8 @@
 
-# Your name:
-# Your student id:
-# Your email:
-# List who you have worked with on this project:
+# Your name: Armaan Grewal
+# Your student id: 5575-6195
+# Your email: armaang@umich.edu
+# List who you have worked with on this project: N/A
 
 import unittest
 import sqlite3
@@ -53,6 +53,31 @@ def make_positions_table(data, cur, conn):
 #     created for you -- see make_positions_table above for details.
 
 def make_players_table(data, cur, conn):
+    id_list = []
+    name_list = []
+    position_list = []
+    position_id_list = []
+    birthyear_list = []
+    nationality_list = []
+
+    cur.execute('DROP TABLE IF EXISTS Players')
+    cur.execute('CREATE TABLE Players (id INTEGER PRIMARY KEY, name TEXT, position_id INTEGER, birthyear INTEGER, nationality TEXT)')
+    
+    for plyr in data['squad']:
+        id_list.append(plyr['id'])
+        name_list.append(plyr['name'])
+        position_list.append(plyr['position'])
+        birthyear_list.append(int(plyr['dateOfBirth'][:4]))
+        nationality_list.append(plyr['nationality'])
+
+    for position in position_list:
+        cur.execute('SELECT id FROM Positions WHERE position =?', (position,))
+        position_id_list.append(cur.fetchone()[0])
+    
+    for i in range(len(id_list)):
+        cur.execute('INSERT INTO Players (id, name, position_id, birthyear, nationality) VALUES (?,?,?,?,?)', (id_list[i], name_list[i], position_id_list[i], birthyear_list[i], nationality_list[i])) 
+    conn.commit()
+       
     pass
 
 ## [TASK 2]: 10 points
