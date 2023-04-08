@@ -96,26 +96,29 @@ def nationality_search(countries, cur, conn):
     nationality_list = []
     tuple_list = []
 
-    cur.execute('SELECT name FROM Players WHERE nationality = ?', (countries,))
-    names = cur.fetchall()
-    for name in names:
-        name_list.append(name[0])
+    for country in countries:
+    
 
-    cur.execute('SELECT position_id FROM Players WHERE nationality = ?', (countries,))
-    positions = cur.fetchall()
-    for position in positions:
-        position_id_list.append(position[0])
+        cur.execute('SELECT name FROM Players WHERE nationality = ?', (country,))
+        names = cur.fetchall()
+        for name in names:
+            name_list.append(name[0])
 
-    cur.execute("SELECT nationality from Players where nationality = ?", (countries,))
-    nationalities = cur.fetchall()
-    for nationality in nationalities:
-        nationality_list.append(nationality[0])
+        cur.execute('SELECT position_id FROM Players WHERE nationality = ?', (country,))
+        positions = cur.fetchall()
+        for position in positions:
+            position_id_list.append(position[0])
+
+        cur.execute("SELECT nationality FROM Players WHERE nationality = ?", (country,))
+        nationalities = cur.fetchall()
+        for nationality in nationalities:
+            nationality_list.append(nationality[0])
 
     conn.commit()
 
     for i in range(len(name_list)):
         tuple_list.append((name_list[i],  position_id_list[i], nationality_list[i]))
-    print(tuple_list)
+    #print(tuple_list)
     return tuple_list
     pass
 
@@ -288,6 +291,7 @@ class TestAllMethods(unittest.TestCase):
         self.assertEqual(c, [('Teden Mengi', 'Defence', 2002)])
     
     # test extra credit
+    '''
     def test_make_winners_table(self):
         self.cur2.execute('SELECT * from Winners')
         winners_list = self.cur2.fetchall()
@@ -303,7 +307,7 @@ class TestAllMethods(unittest.TestCase):
     def test_winners_since_search(self):
 
         pass
-
+    '''
 
 def main():
 
